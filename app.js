@@ -5,11 +5,13 @@ const morgan = require('morgan');
 const app = express();
 const path = require('path')
 const sessionsRouter = require('./src/routers/sessionsRouter');
+const adminRouter = require('./src/routers/adminRouter');
 app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, '/public/')));
 
 
 app.use('/sessions', sessionsRouter);
+app.use('/admin', adminRouter);
 
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
