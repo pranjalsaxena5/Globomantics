@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const app = express();
 const path = require('path')
 const sessionsRouter = express.Router();
-
+const sessions = require('./src/data/sessions.json')
 
 app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, '/public/')));
@@ -14,21 +14,19 @@ app.use(express.static(path.join(__dirname, '/public/')));
 sessionsRouter.route('/').get(
     (req, res) => {
         res.render('sessions', {
-            sessions: [
-                {title: 'Session 1', description: 'This is session 1'},
-                {title: 'Session 2', description: 'This is session 2'},
-                {title: 'Session 3', description: 'This is session 3'},
-                {title: 'Session 4', description: 'This is session 4'}
-
-            ]
+            sessions
         })
     }
 )
 app.use('/sessions', sessionsRouter);
 
 
-sessionsRouter.route('/1').get((req, res) => {
-    res.send('Hello single sessions');
+sessionsRouter.route('/:id').get((req, res) => {
+    const id = req.params.id;
+    // res.send('Hello from single session ' + id);
+    res.render('session', {
+        session: sessions[id],
+    })
 })
 
 app.set('views', './src/views');
@@ -36,7 +34,7 @@ app.set('view engine', 'ejs');
 
 
 app.get('/', (req, res) => {
-    res.render('index', { title: 'Welcome to Globomantics', data: ['a', 'b', 'c']} );
+    res.render('index', { title: 'Welcome to Globomantics', data: ['a', 'b', 'c'] });
 });
 
 
