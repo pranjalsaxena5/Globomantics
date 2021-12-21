@@ -5,6 +5,14 @@ const debug = require('debug')('app:sessionRouter');
 const { MongoClient, ObjectID } = require('mongodb')
 
 
+sessionsRouter.use((req, res, next) => {
+    if(req.user){
+        next();
+    }else{
+        res.redirect('/auth/signIn');
+    }
+})
+
 
 sessionsRouter.route('/').get(
     (req, res) => {
